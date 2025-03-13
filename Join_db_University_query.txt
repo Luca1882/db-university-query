@@ -1,0 +1,54 @@
+# Esercizio 1
+SELECT st.* 
+from students as st
+join degrees as d on st.degree_id = d.id
+where d.name = 'Corso di Laurea in Economia';
+
+# Esercizio 2
+SELECT *
+from degrees as deg
+join departments as dep on deg.department_id = dep.id
+where deg.level = 'magistrale' 
+AND dep.name = 'Dipartimento di Neuroscienze';
+
+# Esercizio 3
+select c.*
+from courses as c
+join course_teacher as ct on ct.course_id = c.id
+where ct.teacher_id = '44';
+
+# Esercizio 4
+SELECT st.id, st.surname, st.name, deg.name, dep.name
+FROM students as st
+JOIN degrees as deg ON st.degree_id = deg.id
+JOIN departments as dep ON deg.department_id = dep.id
+ORDER BY st.surname, st.name;
+
+# Esercizio 5
+SELECT d.name, c.name, t.surname, t.name
+from degrees as d
+join courses as c on c.degree_id = d.id
+join course_teacher as ct on c.id = ct.course_id
+join teachers as t on ct.teacher_id = t.id
+order by d.name, c.name, t.surname, t.name;
+
+# Esercizio 6
+select distinct t.name as 'Nome', t.surname as 'Cognome', dep.name
+from teachers as t
+join course_teacher as ct on ct.teacher_id = t.id
+join courses as c on c.id = ct.course_id
+join degrees as d on d.id = c.degree_id
+join departments as dep on dep.id = d.department_id
+where dep.name like 'Dipartimento di Matematica';
+
+
+# Bonus
+select s.name as 'Name', s.surname as 'Cognome', e.id as 'Esame id',
+	   COUNT(es.exam_id) as 'Tentativi esame',
+       MAX(es.vote) as 'Voto'
+from students as s
+join exam_student as es on s.id = es.student_id
+join exams as e on e.id = es.exam_id
+where es.vote >= 18
+group by s.id, e.id
+order by s.surname, s.name;
